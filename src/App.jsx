@@ -26,7 +26,6 @@ import { useState } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { formSchema } from "@/lib/formSchema";
 import FormStepper from "./components/FormStepper";
 

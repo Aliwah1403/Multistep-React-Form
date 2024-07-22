@@ -19,6 +19,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -120,19 +121,38 @@ function FirstStepForm() {
   );
 }
 
-const country = [
-  { label: "Argentina", value: "argentina" },
+// const languages = [
+//   { label: "English", value: "en" },
+//   { label: "French", value: "fr" },
+//   { label: "German", value: "de" },
+//   { label: "Spanish", value: "es" },
+//   { label: "Portuguese", value: "pt" },
+//   { label: "Russian", value: "ru" },
+//   { label: "Japanese", value: "ja" },
+//   { label: "Korean", value: "ko" },
+//   { label: "Chinese", value: "zh" },
+// ];
+
+const countries = [
   { label: "Kenya", value: "kenya" },
   { label: "Tanzania", value: "tanzania" },
-  { label: "South Africa", value: "south africa" },
+  { label: "Uganda", value: "Uganda" },
 ];
 
 const SecondFormSchema = z.object({
-  country: z.string(),
-  state: z.string().min(1).max(255),
-  street: z.string().min(1).max(255),
-  zipcode: z.coerce.number().gte(1).lte(9999999999),
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
 });
+
+// const SecondFormSchema = z.object({
+//   country: z.string({
+//     required_error: "Please select a language.",
+//   }),
+//   state: z.string().min(1).max(255),
+//   street: z.string().min(1).max(255),
+//   // zipcode: z.coerce.number().gte(1).lte(9999999999),
+// });
 
 function SecondStepForm() {
   const { nextStep } = useStepper();
@@ -140,11 +160,15 @@ function SecondStepForm() {
   const form = useForm({
     resolver: zodResolver(SecondFormSchema),
     defaultValues: {
-      country: "",
-      state: "",
-      street: "",
-      zipcode: "",
+      username: "",
     },
+
+    // defaultValues: {
+    //   country: "",
+    //   state: "",
+    //   street: "",
+    //   // zipcode: "",
+    // },
   });
 
   function onSubmit(data) {
@@ -157,116 +181,139 @@ function SecondStepForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="flex flex-row gap-4">
-          <FormField
-            control={form.control}
-            name="state"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>State</FormLabel>
-                <FormControl>
-                  <Input placeholder="Placeholder" {...field} />
-                </FormControl>
-                <FormDescription>State</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="street"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Street</FormLabel>
-                <FormControl>
-                  <Input placeholder="Placeholder" {...field} />
-                </FormControl>
-                <FormDescription>Street</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="zip code"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Zip Code</FormLabel>
-                <FormControl>
-                  <Input type="number" placeholder="Placeholder" {...field} />
-                </FormControl>
-                <FormDescription>Zip/Postal code</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
         <FormField
           control={form.control}
-          name="country"
-          render={({ field }) => {
-            console.log("Field object:", field); // Log the field object
-            return (
-              <FormItem className="flex flex-col">
-                <FormLabel>Country</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-[200px] justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? country.find((item) => item.value === field.value)
-                              ?.label
-                          : "Select item"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search country..." />
-                      <CommandEmpty>No country found.</CommandEmpty>
-                      <CommandGroup>
-                        {country.map((item) => (
-                          <CommandItem
-                            value={item.label}
-                            key={item.value}
-                            onSelect={() => {
-                              console.log("Selected item:", item); // Log the selected item
-                              form.setValue("country", item.value);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                item.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {item.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>Your country of residence</FormDescription>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="nyxb" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <StepperFormActions />
       </form>
     </Form>
+
+    // <Form {...form}>
+    //   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    //     <div className="flex flex-row gap-4">
+    //       <FormField
+    //         control={form.control}
+    //         name="state"
+    //         render={({ field }) => (
+    //           <FormItem>
+    //             <FormLabel>State</FormLabel>
+    //             <FormControl>
+    //               <Input placeholder="Placeholder" {...field} />
+    //             </FormControl>
+    //             <FormDescription>State</FormDescription>
+    //             <FormMessage />
+    //           </FormItem>
+    //         )}
+    //       />
+    //       <FormField
+    //         control={form.control}
+    //         name="street"
+    //         render={({ field }) => (
+    //           <FormItem>
+    //             <FormLabel>Street</FormLabel>
+    //             <FormControl>
+    //               <Input placeholder="Placeholder" {...field} />
+    //             </FormControl>
+    //             <FormDescription>Street</FormDescription>
+    //             <FormMessage />
+    //           </FormItem>
+    //         )}
+    //       />
+
+    //       {/* <FormField
+    //         control={form.control}
+    //         name="zip code"
+    //         render={({ field }) => (
+    //           <FormItem>
+    //             <FormLabel>Zip Code</FormLabel>
+    //             <FormControl>
+    //               <Input type="number" placeholder="Placeholder" {...field} />
+    //             </FormControl>
+    //             <FormDescription>Zip/Postal code</FormDescription>
+    //             <FormMessage />
+    //           </FormItem>
+    //         )}
+    //       /> */}
+    //     </div>
+    //     <FormField
+    //       control={form.control}
+    //       name="country"
+    //       render={({ field }) => (
+    //         <FormItem className="flex flex-col">
+    //           <FormLabel>Country</FormLabel>
+    //           <Popover>
+    //             <PopoverTrigger asChild>
+    //               <FormControl>
+    //                 <Button
+    //                   variant="outline"
+    //                   role="combobox"
+    //                   className={cn(
+    //                     "w-[200px] justify-between",
+    //                     !field.value && "text-muted-foreground"
+    //                   )}
+    //                 >
+    //                   {field.value
+    //                     ? countries.find(
+    //                         (country) => country.value === field.value
+    //                       )?.label
+    //                     : "Select country"}
+    //                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+    //                 </Button>
+    //               </FormControl>
+    //             </PopoverTrigger>
+    //             <PopoverContent className="w-[200px] p-0">
+    //               <Command>
+    //                 <CommandInput placeholder="Search country..." />
+    //                 <CommandList>
+    //                   <CommandEmpty>No country found.</CommandEmpty>
+    //                   <CommandGroup>
+    //                     {countries.map((country) => (
+    //                       <CommandItem
+    //                         value={country.label}
+    //                         key={country.value}
+    //                         onSelect={() => {
+    //                           form.setValue("country", country.value);
+    //                         }}
+    //                       >
+    //                         <Check
+    //                           className={cn(
+    //                             "mr-2 h-4 w-4",
+    //                             country.value === field.value
+    //                               ? "opacity-100"
+    //                               : "opacity-0"
+    //                           )}
+    //                         />
+    //                         {country.label}
+    //                       </CommandItem>
+    //                     ))}
+    //                   </CommandGroup>
+    //                 </CommandList>
+    //               </Command>
+    //             </PopoverContent>
+    //           </Popover>
+    //           <FormDescription>
+    //             This is your country of residence.
+    //           </FormDescription>
+    //           <FormMessage />
+    //         </FormItem>
+    //       )}
+    //     />
+    //     <StepperFormActions />
+    //   </form>
+    // </Form>
   );
 }
 

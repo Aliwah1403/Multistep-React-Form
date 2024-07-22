@@ -44,8 +44,11 @@ const FormStepper = () => {
 };
 
 const FirstFormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  fullname: z.string().min(1).max(255, {
+    message: "Enter your full name",
+  }),
+  email: z.string().email().min(1).max(255, {
+    message: "Invalid email address",
   }),
 });
 
@@ -55,7 +58,8 @@ function FirstStepForm() {
   const form = useForm({
     resolver: zodResolver(FirstFormSchema),
     defaultValues: {
-      username: "",
+      fullname: "",
+      email: "",
     },
   });
 
@@ -71,16 +75,29 @@ function FirstStepForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="username"
+          name="fullname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="nyxb" {...field} />
+                <Input placeholder="John Doe" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>Your full name</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="Email" {...field} />
+              </FormControl>
+              <FormDescription>Your email address</FormDescription>
               <FormMessage />
             </FormItem>
           )}

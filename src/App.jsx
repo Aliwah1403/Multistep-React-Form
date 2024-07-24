@@ -46,7 +46,7 @@ function App() {
               Anyone who has this link will be able to view this.
             </DialogDescription>
           </DialogHeader>
-          <FormStepper />
+          <FormStepper/>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
               <Button type="button" variant="outline">

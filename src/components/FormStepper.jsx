@@ -30,12 +30,12 @@ import { Button } from "./ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const steps = [{ label: "Step 1" }, { label: "Step 2" }];
+const steps = [{ label: "Step 1", description: 'Description 1' }, { label: "Step 2", description: 'Description 2' }];
 
 const FormStepper = () => {
   return (
     <div className="flex w-full flex-col gap-4">
-      <Stepper variant="circle-alt" initialStep={0} steps={steps}>
+      <Stepper variant="circle-alt" initialStep={0} steps={steps} size='md'>
         {steps.map((stepProps, index) => {
           if (index === 0) {
             return (

@@ -125,18 +125,6 @@ function FirstStepForm() {
   );
 }
 
-// const languages = [
-//   { label: "English", value: "en" },
-//   { label: "French", value: "fr" },
-//   { label: "German", value: "de" },
-//   { label: "Spanish", value: "es" },
-//   { label: "Portuguese", value: "pt" },
-//   { label: "Russian", value: "ru" },
-//   { label: "Japanese", value: "ja" },
-//   { label: "Korean", value: "ko" },
-//   { label: "Chinese", value: "zh" },
-// ];
-
 const countries = [
   { label: "Kenya", value: "kenya" },
   { label: "Tanzania", value: "tanzania" },
@@ -151,61 +139,36 @@ const countries = [
 
 const SecondFormSchema = z.object({
   country: z.string({
-    required_error: "Please select a language.",
+    required_error: "Please select a country.",
   }),
   state: z.string().min(1).max(255),
   street: z.string().min(1).max(255),
-  // zipcode: z.coerce.number().gte(1).lte(9999999999),
 });
 
 function SecondStepForm() {
   const { nextStep } = useStepper();
+  const [open, setOpen] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(SecondFormSchema),
-    // defaultValues: {
-    //   username: "",
-    // },
 
     defaultValues: {
-      country: "",
       state: "",
       street: "",
-      // zipcode: "",
     },
   });
 
   function onSubmit(data) {
-    nextStep();
-    toast({
-      title: "Second step submitted!",
-    });
-    console.log(data);
+    try {
+      nextStep();
+      alert("Worked");
+      console.log(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return (
-    // <Form {...form}>
-    //   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-    //     <FormField
-    //       control={form.control}
-    //       name="username"
-    //       render={({ field }) => (
-    //         <FormItem>
-    //           <FormLabel>Username</FormLabel>
-    //           <FormControl>
-    //             <Input placeholder="nyxb" {...field} />
-    //           </FormControl>
-    //           <FormDescription>
-    //             This is your public display name.
-    //           </FormDescription>
-    //           <FormMessage />
-    //         </FormItem>
-    //       )}
-    //     />
-    //     <StepperFormActions />
-    //   </form>
-    // </Form>
-
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex flex-row gap-4">
@@ -237,21 +200,6 @@ function SecondStepForm() {
               </FormItem>
             )}
           />
-
-          {/* <FormField
-            control={form.control}
-            name="zip code"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Zip Code</FormLabel>
-                <FormControl>
-                  <Input type="number" placeholder="Placeholder" {...field} />
-                </FormControl>
-                <FormDescription>Zip/Postal code</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
         </div>
         <FormField
           control={form.control}
@@ -259,7 +207,7 @@ function SecondStepForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Country</FormLabel>
-              <Popover>
+              <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -291,6 +239,7 @@ function SecondStepForm() {
                             key={country.value}
                             onSelect={() => {
                               form.setValue("country", country.value);
+                              setOpen(false)
                             }}
                           >
                             <Check

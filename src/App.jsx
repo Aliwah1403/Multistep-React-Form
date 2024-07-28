@@ -30,7 +30,7 @@ import StepperPage from "./components/StepperPage";
 function App() {
   return (
     <div className="h-screen flex items-center justify-center">
-      <Dialog>
+      {/* <Dialog>
         <DialogTrigger asChild>
           <Button>
             New
@@ -53,8 +53,8 @@ function App() {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
-      {/* <StepperPage /> */}
+      </Dialog> */}
+      <StepperPage />
     </div>
   );
 }

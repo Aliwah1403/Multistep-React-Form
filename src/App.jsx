@@ -11,7 +11,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-  import {
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -21,13 +21,11 @@ import {
 
 import { useState } from "react";
 
-
-
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { formSchema } from "@/lib/formSchema";
 import FormStepper from "./components/FormStepper";
+import StepperPage from "./components/StepperPage";
 
 function App() {
   return (
@@ -56,6 +54,7 @@ function App() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* <StepperPage /> */}
     </div>
   );
 }
